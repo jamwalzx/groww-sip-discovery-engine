@@ -1,0 +1,565 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "tertiary-container": "#3acf95",
+        "error-container": "#93000a",
+        "on-tertiary-fixed-variant": "#005236",
+        "surface-container-highest": "#31353c",
+        "secondary-container": "#152ecf",
+        "on-secondary-fixed-variant": "#102bcd",
+        "outline": "#85948c",
+        "on-tertiary-fixed": "#002113",
+        "secondary-fixed": "#dfe0ff",
+        "primary-fixed": "#59fdc5",
+        "inverse-on-surface": "#2d3137",
+        "tertiary": "#5eecaf",
+        "on-error-container": "#ffdad6",
+        "surface-container-high": "#262a31",
+        "surface-container-lowest": "#0a0e14",
+        "on-secondary-fixed": "#000b62",
+        "inverse-surface": "#dfe2eb",
+        "surface": "#10141a",
+        "tertiary-fixed-dim": "#4edea3",
+        "on-surface": "#dfe2eb",
+        "error": "#ffb4ab",
+        "on-secondary": "#00179b",
+        "on-error": "#690005",
+        "inverse-primary": "#006c4f",
+        "outline-variant": "#3c4a43",
+        "surface-container": "#1c2026",
+        "secondary-fixed-dim": "#bcc2ff",
+        "surface-bright": "#353940",
+        "on-primary-fixed-variant": "#00513b",
+        "on-primary-container": "#00533c",
+        "primary-container": "#00d09c",
+        "on-secondary-container": "#aab3ff",
+        "primary-fixed-dim": "#2fe0aa",
+        "on-surface-variant": "#bacac1",
+        "primary": "#44edb7",
+        "on-tertiary": "#003824",
+        "tertiary-fixed": "#6ffbbe",
+        "on-primary-fixed": "#002116",
+        "on-primary": "#003828",
+        "surface-container-low": "#181c22",
+        "surface-dim": "#10141a",
+        "on-tertiary-container": "#005338",
+        "background": "#10141a",
+        "surface-variant": "#31353c",
+        "secondary": "#bcc2ff",
+        "surface-tint": "#2fe0aa",
+        "on-background": "#dfe2eb"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "margin": "1rem",
+        "space-lg": "1rem",
+        "margin-compact": "0.75rem",
+        "space-md": "0.75rem",
+        "gutter": "0.75rem",
+        "gutter-compact": "0.5rem",
+        "space-xl": "1.5rem",
+        "space-xs": "0.25rem",
+        "space-2xs": "0.125rem",
+        "space-sm": "0.5rem"
+      },
+      "fontFamily": {
+        "body-sm": ["Geist"],
+        "headline-sm": ["Geist"],
+        "headline-xl": ["Geist"],
+        "headline-md": ["Geist"],
+        "body-lg": ["Geist"],
+        "metric-lg": ["JetBrains Mono"],
+        "metric-display": ["JetBrains Mono"],
+        "label-md": ["JetBrains Mono"],
+        "label-xs": ["JetBrains Mono"],
+        "metric-sm": ["JetBrains Mono"],
+        "headline-lg": ["Geist"],
+        "body-md": ["Geist"]
+      },
+      "fontSize": {
+        "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+        "headline-sm": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+        "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+        "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+        "body-lg": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+        "metric-lg": ["20px", {"lineHeight": "26px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+        "metric-display": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+        "label-md": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+        "label-xs": ["10px", {"lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "500"}],
+        "metric-sm": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+        "body-md": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+      }
+    }
+  }
+}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md"><div class="h-28 w-full px-space-lg flex flex-col justify-between pt-space-xs"><div class="flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary-container text-[18px]">insights</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">Groww <span class="text-primary">AI Engine</span></span><span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">SIP Retention Telemetry</span></div></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-2xs rounded-full bg-surface-container-high"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label-xs text-label-xs text-on-surface-variant">Ingested: <span class="text-on-surface font-metric-sm text-metric-sm font-semibold">2,450</span> records</span><span class="font-label-xs text-label-xs text-outline">|</span><span class="font-label-xs text-label-xs text-tertiary font-medium">Zero PII</span><span class="font-label-xs text-label-xs text-outline">|</span><span class="font-label-xs text-label-xs text-primary font-medium uppercase">Active</span></div></div><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center bg-surface-container-low rounded-lg p-space-2xs gap-space-2xs"><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-label-xs text-label-xs" type="button">Manual</button></div><div class="flex items-center gap-space-xs"><button class="h-8 px-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-body-sm text-body-sm transition-colors" type="button">Export CSV</button><button class="h-8 px-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-secondary font-body-sm text-body-sm transition-colors" type="button">Top 5 Opps</button><button class="h-8 px-space-sm rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-body-sm font-semibold hover:bg-primary-fixed-dim transition-colors" type="button">Run Pipeline</button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div><nav class="flex items-center gap-space-md overflow-x-auto h-10" data-active-classes="text-primary font-medium relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary"><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="overview-and-data-funnel" href="#">Overview &amp; Data Funnel</a><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="the-9-core-questions" href="#">The 9 Core Questions</a><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="opportunity-matrix" href="#">Opportunity Matrix</a><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="segment-explorer" href="#">Segment Explorer</a><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="continuers-vs-drop-offs" href="#">Continuers vs. Drop-offs</a><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="quality-and-evals-harness" href="#">Quality &amp; Evals Harness</a><a class="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm whitespace-nowrap transition-colors py-space-xs" data-path="live-try-it-sandbox" href="#">Live 'Try-It' Sandbox</a></nav></div></header><main class="w-full pt-28 bg-background min-h-screen px-space-lg pb-space-xl"><div class="flex flex-col w-full gap-space-lg">
+<!-- Top Level Metadata & Operational Status Banner -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm bg-surface-container-low p-space-md rounded-xl shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">filter_alt_off</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Data Hygiene &amp; Pipeline Observability</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest font-label-xs text-label-xs text-primary font-medium tracking-wide">BATCH #GW-8821B</span>
+<span class="px-space-xs py-space-2xs rounded bg-tertiary-container/20 text-tertiary font-label-xs text-label-xs">ZERO-PII AUDIT: PASS</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Telemetry ingestion window: Last 7 calendar days • Partition: <code class="font-metric-sm text-metric-sm text-secondary">sip_discovery_v4_prod</code></p>
+</div>
+</div>
+<div class="flex items-center gap-space-md self-end md:self-center font-metric-sm text-metric-sm">
+<div class="flex flex-col items-end">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase">E2E Compute Cost</span>
+<span class="text-on-surface font-semibold">$0.0024 <span class="text-on-surface-variant font-normal">/ record</span></span>
+</div>
+<div class="h-6 w-px bg-surface-container-highest"></div>
+<div class="flex flex-col items-end">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase">Run Time</span>
+<span class="text-tertiary font-semibold">1m 42s</span>
+</div>
+</div>
+</div>
+<!-- KPI Cards Quad Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1: Raw Items -->
+<div class="relative overflow-hidden bg-surface-container rounded-xl p-space-md shadow-sm flex flex-col justify-between group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/5 rounded-full pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline">RAW FEED INGESTED</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">cloud_download</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface font-semibold">2,450</span>
+<span class="font-label-xs text-label-xs text-primary font-medium flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +18.4% WoW
+          </span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low rounded p-space-xs flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="text-outline">Sync Pulse</span>
+<span class="font-metric-sm text-metric-sm text-on-surface">14 mins ago</span>
+</div>
+</div>
+<!-- Card 2: Clean Unique -->
+<div class="relative overflow-hidden bg-surface-container rounded-xl p-space-md shadow-sm flex flex-col justify-between group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-secondary/5 rounded-full pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline">DEDUPLICATED SET</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[16px]">fingerprint</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface font-semibold">1,890</span>
+<span class="px-space-2xs py-0.5 rounded bg-secondary-container/30 text-secondary font-label-xs text-label-xs font-semibold">
+            77.1% Retention
+          </span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low rounded p-space-xs flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="text-outline">Near-Exact Dupes</span>
+<span class="font-metric-sm text-metric-sm text-error">-560 dropped</span>
+</div>
+</div>
+<!-- Card 3: Relevant SIP Items -->
+<div class="relative overflow-hidden bg-surface-container rounded-xl p-space-md shadow-sm flex flex-col justify-between group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-tertiary/5 rounded-full pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline">DOMAIN SIP RELEVANT</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface font-semibold">1,120</span>
+<span class="font-label-xs text-label-xs text-tertiary font-medium">LLM Verified</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low rounded p-space-xs flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="text-outline">Semantic Noise</span>
+<span class="font-metric-sm text-metric-sm text-on-surface-variant">770 non-SIP out</span>
+</div>
+</div>
+<!-- Card 4: High Confidence -->
+<div class="relative overflow-hidden bg-surface-container rounded-xl p-space-md shadow-sm flex flex-col justify-between group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/10 rounded-full pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+<div>
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-semibold">HIGH CONFIDENCE SIGNALS</span>
+<div class="w-7 h-7 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-primary font-semibold">980</span>
+<span class="px-space-2xs py-0.5 rounded bg-primary-container/30 text-on-primary-fixed font-label-xs text-label-xs font-semibold">
+            Conf ≥ 0.85
+          </span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low rounded p-space-xs flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="text-outline">Net Funnel Yield</span>
+<span class="font-metric-sm text-metric-sm text-primary font-bold">40.0% of Raw</span>
+</div>
+</div>
+</div>
+<!-- Interactive Data Cleaning Funnel Widget -->
+<div class="bg-surface-container rounded-xl p-space-lg shadow-md flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface">Data Sanitation Attrition Funnel</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs">5 Processing Stages</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hover each stage node to inspect dropped payload distribution, token overhead, and filter models applied.</p>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-lowest p-space-xs rounded-lg font-metric-sm text-metric-sm">
+<span class="text-outline">Inference Engine:</span>
+<span class="text-secondary font-medium">Fine-tuned Llama-3.1-70B + MiniLM-L6-v2</span>
+</div>
+</div>
+<!-- Multi-stage interactive horizontal chart -->
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-space-sm pt-space-xs">
+<!-- Stage 1 -->
+<div class="relative bg-surface-container-high rounded-xl p-space-md transition-all hover:bg-surface-container-highest cursor-pointer group flex flex-col justify-between h-48">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase font-medium">Stage 01: Raw Ingest</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">2,450</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">100% of Raw Sources</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-full h-2 overflow-hidden my-space-xs">
+<div class="bg-primary h-full rounded-full w-full"></div>
+</div>
+<div class="text-outline font-label-xs text-label-xs">
+          Pass-Through: 2,450<br>
+<span class="text-on-surface-variant">Multi-channel Webhook</span>
+</div>
+<!-- Tooltip on hover -->
+<div class="absolute bottom-full left-0 mb-space-xs w-60 p-space-sm bg-surface-container-lowest rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20">
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-space-2xs">Raw Feed Components</div>
+<div class="space-y-space-2xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between"><span class="">Google Play:</span><span class="font-metric-sm text-metric-sm text-on-surface">1,029</span></div>
+<div class="flex justify-between"><span class="">Reddit r/India:</span><span class="font-metric-sm text-metric-sm text-on-surface">686</span></div>
+<div class="flex justify-between"><span class="">YouTube Comments:</span><span class="font-metric-sm text-metric-sm text-on-surface">441</span></div>
+<div class="flex justify-between"><span class="">Apple App Store:</span><span class="font-metric-sm text-metric-sm text-on-surface">294</span></div>
+</div>
+</div>
+</div>
+<!-- Stage 2 -->
+<div class="relative bg-surface-container-high rounded-xl p-space-md transition-all hover:bg-surface-container-highest cursor-pointer group flex flex-col justify-between h-48">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase font-medium">Stage 02: Anti-Spam</span>
+<span class="w-2 h-2 rounded-full bg-error"></span>
+</div>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">2,352</div>
+<div class="font-body-sm text-body-sm text-error mt-space-2xs">-98 (-4%) Pruned</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-full h-2 overflow-hidden my-space-xs">
+<div class="bg-primary h-full rounded-full" style="width: 96%"></div>
+</div>
+<div class="text-outline font-label-xs text-label-xs">
+          Heuristic Bot Scrubber<br>
+<span class="text-on-surface-variant">Promotional &amp; Copypasta</span>
+</div>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-0 mb-space-xs w-60 p-space-sm bg-surface-container-lowest rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20">
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-space-2xs">Bot Filter Breakdown</div>
+<div class="space-y-space-2xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between"><span class="">Telegram Referral Links:</span><span class="font-metric-sm text-metric-sm text-error">54</span></div>
+<div class="flex justify-between"><span class="">Automated Scraper Echoes:</span><span class="font-metric-sm text-metric-sm text-error">28</span></div>
+<div class="flex justify-between"><span class="">Emoji/Unicode Spam:</span><span class="font-metric-sm text-metric-sm text-error">16</span></div>
+</div>
+</div>
+</div>
+<!-- Stage 3 -->
+<div class="relative bg-surface-container-high rounded-xl p-space-md transition-all hover:bg-surface-container-highest cursor-pointer group flex flex-col justify-between h-48">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase font-medium">Stage 03: Deduplication</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">1,911</div>
+<div class="font-body-sm text-body-sm text-error mt-space-2xs">-441 (-18%) Dupes</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-full h-2 overflow-hidden my-space-xs">
+<div class="bg-primary h-full rounded-full" style="width: 78%"></div>
+</div>
+<div class="text-outline font-label-xs text-label-xs">
+          MinHash LSH &amp; Cosine<br>
+<span class="text-on-surface-variant">Threshold Sim &gt; 0.88</span>
+</div>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-0 mb-space-xs w-60 p-space-sm bg-surface-container-lowest rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20">
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-space-2xs">De-duplication Engine</div>
+<div class="space-y-space-2xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between"><span class="">Exact Hash Collisions:</span><span class="font-metric-sm text-metric-sm text-on-surface">312</span></div>
+<div class="flex justify-between"><span class="">Near-duplicate Threads:</span><span class="font-metric-sm text-metric-sm text-on-surface">129</span></div>
+<div class="flex justify-between"><span class="">Shingle Size:</span><span class="font-metric-sm text-metric-sm text-secondary">k=3 grams</span></div>
+</div>
+</div>
+</div>
+<!-- Stage 4 -->
+<div class="relative bg-surface-container-high rounded-xl p-space-md transition-all hover:bg-surface-container-highest cursor-pointer group flex flex-col justify-between h-48">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase font-medium">Stage 04: SIP Classifier</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">1,185</div>
+<div class="font-body-sm text-body-sm text-error mt-space-2xs">-726 (-38%) Irrelevant</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-full h-2 overflow-hidden my-space-xs">
+<div class="bg-primary h-full rounded-full" style="width: 48%"></div>
+</div>
+<div class="text-outline font-label-xs text-label-xs">
+          Prompt Classifier Llama-3<br>
+<span class="text-on-surface-variant">Stocks, F&amp;O, KYC purged</span>
+</div>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-0 mb-space-xs w-60 p-space-sm bg-surface-container-lowest rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20">
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-space-2xs">Off-Topic Classified</div>
+<div class="space-y-space-2xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between"><span class="">Intraday/F&amp;O Options:</span><span class="font-metric-sm text-metric-sm text-on-surface">390</span></div>
+<div class="flex justify-between"><span class="">Generic KYC Document Wait:</span><span class="font-metric-sm text-metric-sm text-on-surface">215</span></div>
+<div class="flex justify-between"><span class="">Direct US Equities query:</span><span class="font-metric-sm text-metric-sm text-on-surface">121</span></div>
+</div>
+</div>
+</div>
+<!-- Stage 5: Final Output -->
+<div class="relative bg-surface-container-highest rounded-xl p-space-md transition-all hover:bg-surface-bright cursor-pointer group flex flex-col justify-between h-48 shadow-inner">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-xs text-label-xs text-primary uppercase font-bold">Stage 05: Net Verified</span>
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+<div class="font-metric-lg text-metric-lg text-primary font-bold">980</div>
+<div class="font-body-sm text-body-sm text-tertiary mt-space-2xs font-medium">40.0% Net Yield Ratio</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-full h-2 overflow-hidden my-space-xs">
+<div class="bg-primary-container h-full rounded-full" style="width: 40%"></div>
+</div>
+<div class="text-outline font-label-xs text-label-xs">
+          High Evidence Grounding<br>
+<span class="text-on-surface font-semibold">Ready for Core 9 Matrix</span>
+</div>
+<!-- Tooltip -->
+<div class="absolute bottom-full right-0 mb-space-xs w-60 p-space-sm bg-surface-container-lowest rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20">
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-space-2xs">Golden Quality Set</div>
+<div class="space-y-space-2xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between"><span class="">Auto-Pay Mandate Issues:</span><span class="font-metric-sm text-metric-sm text-primary">342</span></div>
+<div class="flex justify-between"><span class="">First Installment Anxiety:</span><span class="font-metric-sm text-metric-sm text-primary">288</span></div>
+<div class="flex justify-between"><span class="">SIP Pause vs Cancel Confusion:</span><span class="font-metric-sm text-metric-sm text-primary">210</span></div>
+<div class="flex justify-between"><span class="">NAV Allocation Date lag:</span><span class="font-metric-sm text-metric-sm text-primary">140</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Inline Telemetry Ribbon -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs bg-surface-container-low px-space-md py-space-sm rounded-lg font-metric-sm text-metric-sm text-on-surface-variant">
+<div class="flex items-center gap-space-md flex-wrap">
+<span class="">Prompt Token Usage: <strong class="text-on-surface font-semibold">1,842,500 toks</strong></span>
+<span class="text-outline">•</span>
+<span class="">Completion Tokens: <strong class="text-on-surface font-semibold">238,100 toks</strong></span>
+<span class="text-outline">•</span>
+<span class="">Avg Step Latency: <strong class="text-on-surface font-semibold">320ms</strong></span>
+</div>
+<div class="flex items-center gap-space-xs text-primary font-medium cursor-pointer hover:underline">
+<span class="">Inspect Detailed Funnel JSON Trace</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Bento Split: Source Bias & Distribution + Pipeline Health Checklist -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+<!-- Left: Source Platform Distribution Chart (8 cols) -->
+<div class="lg:col-span-8 bg-surface-container rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Data Source Distribution &amp; Cognitive Bias Analysis</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Multi-channel ingestion share mapped against demographic sample characteristics</span>
+</div>
+<span class="font-label-xs text-label-xs text-secondary bg-surface-container-high px-space-sm py-space-xs rounded uppercase tracking-wider">Normalized (N=2,450)</span>
+</div>
+<!-- Horizontal Bar Distribution Visualization -->
+<div class="space-y-space-md mb-space-lg">
+<!-- Google Play Store -->
+<div class="space-y-space-2xs">
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">shop</span>
+<span class="font-medium text-on-surface">Google Play Store Reviews</span>
+<span class="text-outline font-label-xs text-label-xs">(Android Ecosystem)</span>
+</div>
+<div class="flex items-center gap-space-sm font-metric-sm text-metric-sm">
+<span class="text-on-surface-variant">1,029 records</span>
+<span class="text-on-surface font-bold">42.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full rounded-full" style="width: 42%;"></div>
+</div>
+</div>
+<!-- Reddit -->
+<div class="space-y-space-2xs">
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">forum</span>
+<span class="font-medium text-on-surface">Reddit r/IndiaInvestments &amp; PersonalFinance</span>
+<span class="text-outline font-label-xs text-label-xs">(Long-form Community)</span>
+</div>
+<div class="flex items-center gap-space-sm font-metric-sm text-metric-sm">
+<span class="text-on-surface-variant">686 records</span>
+<span class="text-on-surface font-bold">28.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-3 rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full rounded-full" style="width: 28%;"></div>
+</div>
+</div>
+<!-- YouTube Comments -->
+<div class="space-y-space-2xs">
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px]">smart_display</span>
+<span class="font-medium text-on-surface">YouTube Educational Creator Comments</span>
+<span class="text-outline font-label-xs text-label-xs">(SIP Tutorial Videos)</span>
+</div>
+<div class="flex items-center gap-space-sm font-metric-sm text-metric-sm">
+<span class="text-on-surface-variant">441 records</span>
+<span class="text-on-surface font-bold">18.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-3 rounded-full overflow-hidden flex">
+<div class="bg-tertiary h-full rounded-full" style="width: 18%;"></div>
+</div>
+</div>
+<!-- Apple App Store -->
+<div class="space-y-space-2xs">
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">phone_iphone</span>
+<span class="font-medium text-on-surface">Apple App Store (iOS)</span>
+<span class="text-outline font-label-xs text-label-xs">(Affluent Cohort)</span>
+</div>
+<div class="flex items-center gap-space-sm font-metric-sm text-metric-sm">
+<span class="text-on-surface-variant">294 records</span>
+<span class="text-on-surface font-bold">12.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-3 rounded-full overflow-hidden flex">
+<div class="bg-on-surface-variant h-full rounded-full" style="width: 12%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Qualitative Source Bias Contextual Callout Banner -->
+<div class="bg-surface-container-low rounded-lg p-space-md flex items-start gap-space-sm shadow-inner">
+<span class="material-symbols-outlined text-secondary text-[22px] shrink-0 mt-0.5">balance</span>
+<div class="flex flex-col gap-space-2xs font-body-sm text-body-sm">
+<span class="font-headline-sm text-headline-sm text-secondary leading-none">Inherent Channel Bias Caveats</span>
+<p class="text-on-surface-variant">
+<strong class="text-on-surface">App reviews (54% combined)</strong> significantly over-index on UPI mandate processing latency and bank reconciliation glitches. 
+            <strong class="text-on-surface">Reddit (28%)</strong> leans heavily towards salaried tech workers with higher financial literacy debating expense ratios. 
+            <strong class="text-on-surface">YouTube (18%)</strong> concentrates on first-generation investors from Tier-2/Tier-3 cities asking foundational questions around market volatility fear.
+          </p>
+</div>
+</div>
+</div>
+<!-- Right: Pipeline Execution & Zero-PII Audit (4 cols) -->
+<div class="lg:col-span-4 bg-surface-container rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[20px]">security</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Zero-PII Compliance</span>
+</div>
+<span class="px-space-xs py-space-2xs rounded bg-tertiary-container/20 text-tertiary font-label-xs text-label-xs font-semibold">100% CLEAN</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Strict automated masking runs locally before raw text is forwarded to inference nodes.
+        </p>
+<!-- Checklist of Guards -->
+<div class="space-y-space-sm bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">PAN &amp; Aadhaar Scrubbing</span>
+<span class="text-on-surface-variant font-label-xs text-label-xs">0 identity tokens detected in 2,450 records</span>
+</div>
+</div>
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Bank A/C &amp; UPI ID Sanitized</span>
+<span class="text-on-surface-variant font-label-xs text-label-xs">114 VPA masks applied (e.g., [MASKED_VPA])</span>
+</div>
+</div>
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Phone Numbers / MSISDNs Scrubbed</span>
+<span class="text-on-surface-variant font-label-xs text-label-xs">Regex + NER model replacement completed</span>
+</div>
+</div>
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Customer Names Pseudonymized</span>
+<span class="text-on-surface-variant font-label-xs text-label-xs">Preserves conversational sentiment index only</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Execution Health Drawer Footer -->
+<div class="mt-space-md pt-space-sm bg-surface-container-highest rounded-lg p-space-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant">
+<span class="">Worker Pod Status</span>
+<span class="text-primary font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span> Healthy (8 Nodes)
+          </span>
+</div>
+<div class="flex items-center justify-between font-metric-sm text-metric-sm">
+<span class="text-on-surface">Queue Depth: <strong class="text-tertiary font-bold">0 msg</strong></span>
+<span class="text-on-surface-variant">Throughput: <strong class="text-on-surface">420 rec/sec</strong></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    (function initInteractiveFunnel() {
+      // Small highlight pulse for cards on click or key navigation
+      const interactiveCards = document.querySelectorAll('.group.cursor-pointer');
+      interactiveCards.forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.add('bg-surface-bright');
+          setTimeout(() => {
+            card.classList.remove('bg-surface-bright');
+          }, 400);
+        });
+      });
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-md"><div class="w-full px-space-lg flex flex-col md:flex-row items-center justify-between gap-space-sm font-label-xs text-label-xs text-on-surface-variant"><div class="flex items-center gap-space-sm"><span class="">Groww Quantitative Discovery Engine v4.2</span><span class="text-outline">|</span><span class="">First-Time SIP Cohort Retention Model</span></div><div class="flex items-center gap-space-md"><span class="flex items-center gap-space-2xs text-tertiary"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>Deterministic Graph Connected</span><span class="">Latency: 42ms</span></div></div></footer>
+
+</body></html>

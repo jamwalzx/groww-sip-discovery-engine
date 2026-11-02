@@ -1,0 +1,86 @@
+[
+  {
+    "id": "reddit_post_sip_drop_01",
+    "subreddit": "IndiaInvestments",
+    "title": "Stopped my SIP after 8 months. Am I doing it wrong?",
+    "selftext": "I started an aggressive SIP of 15k across 3 mutual funds (Nifty 50 index, Parag Parikh Flexi cap, and a midcap fund) on Groww in Jan. Now 8 months in, absolute returns are barely +1.5% and after inflation it feels negative. With upcoming expenses, I decided to stop the SIPs and keep cash in FD. Did I quit too early?",
+    "author": "investor_curious_99",
+    "score": 87,
+    "created_utc": 1726050000,
+    "permalink": "/r/IndiaInvestments/comments/sip_drop_01/stopped_my_sip_after_8_months/",
+    "comments": [
+      {
+        "id": "reddit_comment_c201",
+        "author": "experienced_boglehead",
+        "body": "8 months is nothing in equity mutual funds. You are looking at daily returns instead of letting compounding and rupee cost averaging work. Stopping SIP during flat or down markets locks in opportunity loss.",
+        "score": 45,
+        "created_utc": 1726053600
+      },
+      {
+        "id": "reddit_comment_c202",
+        "author": "delhi_salaried_guy",
+        "body": "Happened to me in my first year too. The mistake is checking the app every 2 days. I uninstalled Groww notifications and set autopay for the day after salary. That was 3 years ago and now portfolio is up 42%.",
+        "score": 31,
+        "created_utc": 1726057200
+      }
+    ]
+  },
+  {
+    "id": "reddit_post_sip_autopay_02",
+    "subreddit": "mutualfunds",
+    "title": "HDFC bank charged 590 Rs penalty for failed Groww SIP mandate",
+    "selftext": "My salary was delayed by 2 days in September. Groww attempted the autopay on 5th and my balance was short by 300 Rs. HDFC levied 590 bounce charges. Is there no grace period or retry mechanism before penalizing? Thinking of cancelling all active SIPs on Groww.",
+    "author": "anxious_engineer_in",
+    "score": 112,
+    "created_utc": 1727000000,
+    "permalink": "/r/mutualfunds/comments/sip_autopay_02/hdfc_bank_charged_590_rs_penalty/",
+    "comments": [
+      {
+        "id": "reddit_comment_c203",
+        "author": "fin_guru_blr",
+        "body": "Always set your SIP debit date to at least 5-7 days after your expected salary date. Also, banks mandate charges are brutal. Groww should have a 48 hour advance alert stating 'Ensure Rs X balance by tomorrow'.",
+        "score": 68,
+        "created_utc": 1727003600
+      }
+    ]
+  },
+  {
+    "id": "reddit_post_sip_xirr_03",
+    "subreddit": "personalfinanceindia",
+    "title": "Why does my Groww app show negative XIRR when absolute returns are positive?",
+    "selftext": "First time investing in mutual funds. Invested 2000 per month for 5 months. Total invested 10000, current value 10150. But XIRR says -3.2%. Can someone explain this calculation? Customer support only shared an FAQ link with formula that made no sense.",
+    "author": "newbie_trader_pune",
+    "score": 53,
+    "created_utc": 1728000000,
+    "permalink": "/r/personalfinanceindia/comments/sip_xirr_03/why_does_my_groww_app_show_negative/",
+    "comments": [
+      {
+        "id": "reddit_comment_c204",
+        "author": "ca_investor_mumbai",
+        "body": "XIRR calculates annualized return factoring in exact cashflow dates. If your latest installment suffered a short-term dip, XIRR will penalize it heavily in the first few months. Don't worry about XIRR until at least 1-2 years.",
+        "score": 29,
+        "created_utc": 1728005000
+      }
+    ]
+  },
+  {
+    "id": "reddit_post_sip_pause_04",
+    "subreddit": "IndiaInvestments",
+    "title": "Need to pause SIP for medical emergency: Groww pause button vs cancelling mandate?",
+    "selftext": "I have family medical emergency and cannot afford my 10k monthly SIP for the next 2-3 months. If I pause on Groww, will AMC charge penalty or cancel my existing units? What is the cleanest way to resume later?",
+    "author": "rohit_sharma_fin",
+    "score": 41,
+    "created_utc": 1729000000,
+    "permalink": "/r/IndiaInvestments/comments/sip_pause_04/need_to_pause_sip_for_medical_emergency/",
+    "comments": [
+      {
+        "id": "reddit_comment_c205",
+        "author": "mf_enthusiast",
+        "body": "Pausing SIP never affects existing units. They stay invested and earn returns. Groww allows pausing up to 3-6 months depending on AMC. If pause option isn't available for your fund, simply stop SIP and restart when cashflow stabilizes.",
+        "score": 24,
+        "created_utc": 1729004000
+      }
+    ]
+  }
+]
+

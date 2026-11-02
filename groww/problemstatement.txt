@@ -1,0 +1,92 @@
+ROLE
+You are a senior full-stack + ML engineer. Build and deploy an "AI Discovery Engine" for a Product Manager on the Growth Team at Groww (Indian investing app).
+
+PROBLEM STATEMENT
+Groww's strategic goal is to increase the % of first-time mutual fund investors who still have an active SIP 12 months after starting their first one (active = at least one successful instalment in the last 30 days). We do not yet know WHY continuation breaks down. Build a system that collects public conversations about SIPs and first-time investing in India at scale, analyzes them with an LLM, and outputs quantified, comparable product-opportunity areas, not just summaries or sentiment scores.
+
+QUESTIONS THE ENGINE MUST ANSWER (each must have a dedicated dashboard view with counts, %, and 3-5 verbatim supporting quotes with source links)
+1. Why do people start a SIP, and what do they expect to happen?
+2. What changes in their behaviour in the months after starting?
+3. What leads investors to pause, reduce or stop a SIP?
+4. What do investors check, and how often, once they have started?
+5. What confuses or worries them inside the app?
+6. What do they do outside the app when they feel unsure?
+7. What separates investors who continue from those who quietly drop off?
+8. How do these patterns differ across segments (income stability, age, source of money, who influenced them)?
+9. What unmet needs emerge consistently across conversations?
+
+DATA SOURCES (build one collector module per source, with a common output schema)
+- Google Play Store reviews: Groww + competitors (Zerodha Coin, INDmoney, Kuvera, ET Money, Paytm Money). Use google-play-scraper. Filter to India, English + Hindi.
+- Apple App Store reviews: same apps, via app-store-scraper or the public iTunes RSS reviews feed.
+- Reddit: r/IndiaInvestments, r/IndianStockMarket, r/personalfinanceindia, r/mutualfunds, r/DalalStreetTalks, r/indianstreetbets. Use the official Reddit API (PRAW) with credentials from .env. Search queries: "SIP stopped", "paused SIP", "SIP not working", "first SIP", "SIP returns low", "SIP failed", "autopay failed", "should I stop SIP", "Groww SIP", etc. Collect posts AND top-level comments.
+- YouTube: YouTube Data API v3. Find personal-finance videos about SIPs/mutual funds for beginners (search queries + top Indian finance channels), then collect comments.
+- Investing forums: TradingQ&A, ValuePickr, Groww community, and Quora (public pages only). Respect robots.txt and rate limits. If a site blocks scraping, log it and skip it gracefully.
+- Social media (X/Twitter, Facebook groups, Telegram): do NOT scrape against terms of service. Provide a "manual import" path (CSV/JSON/paste upload) for any such data I collect myself.
+- Universal fallback: a CSV/paste upload on the UI so any source can be added.
+Target: 2,000-5,000 raw items, with a per-source volume report.
+
+COMMON SCHEMA
+id, source, url, author_hash (hash usernames; store NO PII), date, rating (if any), language, raw_text, parent_id, upvotes/likes.
+
+PIPELINE (each step is a separate, testable module, results cached to disk/SQLite)
+1. Collect: scrape with retries, rate limiting and resumable runs.
+2. Clean: dedupe (exact + near-duplicate), remove spam/bots/promotional posts, detect language (handle Hinglish), translate or normalize to English while keeping the original text.
+3. Relevance filter (LLM): keep only items about SIP behaviour, continuation, pausing, confusion, expectations, trust, or first-time investing. Drop KYC, withdrawal and login-support-only complaints unless they relate to SIP continuation. Report the % dropped.
+4. Structured extraction (LLM with a strict JSON schema, temperature 0, validated with Pydantic). Per item extract:
+   - journey_stage: pre_start | month_1_3 | month_4_12 | beyond_12 | paused_or_lapsed | unknown
+   - start_motivation, expectation_at_start (e.g. quick returns, discipline, parent/friend advice)
+   - behaviour_change_over_time
+   - drop_trigger: payment_failure | cash_crunch | income_irregularity | underwhelming_returns | market_drop | confusion | lost_interest | outside_advice | switched_platform | other
+   - action_taken: paused | reduced | stopped | continued | increased | switched_fund | none
+   - check_behaviour: what they check (NAV, returns, XIRR, statement) and frequency
+   - in_app_confusion (topic) and in_app_worry (topic)
+   - outside_app_behaviour (YouTube, WhatsApp groups, friends/family, Google, spreadsheets, advisors, Reddit)
+   - continuation_signal: what helps those who continue
+   - segment_cues: income_stability, age_band, source_of_money, influencer (self/friend/family/YouTuber/advisor/app nudge), investor_experience
+   - unmet_need (short phrase)
+   - emotion, severity (1-5), verbatim_quote (exact substring of the source text)
+   - confidence (0-1) and evidence_span
+   Every field must allow "unknown"; the model must never guess.
+5. Theme discovery: embed items (sentence-transformers or an embeddings API), cluster (HDBSCAN/BERTopic), have the LLM name each cluster, merge/split with a human-review screen. Track which themes are inductive (emergent) versus the fixed taxonomy.
+6. Opportunity scoring: for each theme compute
+   - frequency (% of relevant items), severity, proximity to SIP continuation (LLM-rated 1-5 with a rubric), addressability without fear/FOMO/urgency nudges and without recommending funds or stocks, and trend over time.
+   Output a ranked, comparable Opportunity Matrix (impact vs addressability) with the formula visible and the weights adjustable.
+7. Segment comparison: cross-tab themes and drop triggers by segment (income stability, age, source of money, influencer) with sample sizes. Flag segments with n < 30 as "low confidence".
+8. Continuers vs drop-offs: compare the two groups on expectations, checking behaviour, confusion, and outside-app behaviour.
+
+QUALITY AND EVALUATION (a core requirement)
+- Golden set: a UI to hand-label ~20-30 items (blind to the model's labels), with an export to CSV.
+- Eval harness: compute per-field agreement (accuracy / Cohen's kappa) between the engine and my labels, list the disagreements, and save the failure categories (sarcasm, Hinglish, multi-topic posts, missing context).
+- Quote integrity check: every displayed quote must be an exact substring of the source; otherwise flag it.
+- Confidence gating: low-confidence items are excluded from counts by default, with a toggle.
+- A bias panel stating source skew (e.g. app reviews skew toward support complaints, Reddit toward self-selected voices) and the per-source mix.
+- An audit log of AI outputs I reject or correct, with a reason field (I need 2-3 documented examples).
+- Version prompts and log the model name, prompt version, and cost per run.
+
+UI (Streamlit, or Next.js if preferred; must be publicly accessible)
+- Home: sources, volumes, and data-quality funnel (raw -> deduped -> relevant -> high-confidence).
+- One tab per question (1-9) with charts, counts, and quotes with links.
+- Opportunity Matrix tab with sortable scores and an adjustable weights slider.
+- Segment explorer with filters.
+- Evals tab: golden-set labeling, agreement scores, failure list.
+- Live "Try it" box: a visitor pastes any review or comment and sees the extracted structured fields and the matching theme. This lets mentors test the engine.
+- Export all results (CSV) and a one-click summary of the top 5 opportunities.
+
+CONSTRAINTS
+- Use only public data; hash user IDs; store no PII; respect robots.txt, ToS and rate limits; document anything blocked.
+- Keep API keys in .env; never hardcode them. Provide .env.example.
+- Do not present any output as investment advice. Never recommend funds or stocks.
+- Every number shown on the dashboard must be traceable to underlying items.
+- Keep total LLM cost under a configurable budget; support batching and caching.
+
+BUILD ORDER (stop and show me a working result after each phase)
+Phase 1: Project scaffold, schema, SQLite, and the Play Store + App Store collectors, plus the volume report.
+Phase 2: Reddit + YouTube collectors, plus the CSV/paste import, cleaning, and dedupe.
+Phase 3: Relevance filter + structured extraction with Pydantic validation.
+Phase 4: Embeddings, clustering, theme naming, and the review screen.
+Phase 5: Opportunity scoring, segment cross-tabs, and continuer-vs-dropoff analysis.
+Phase 6: Golden-set labeling UI and eval harness.
+Phase 7: Dashboard polish, the Try-it box, and deployment to a public URL (Streamlit Community Cloud / Hugging Face Spaces / Vercel), with a README.
+
+DEFINITION OF DONE
+A public URL where a mentor can open the dashboard, see per-source volumes, view findings for all 9 questions with quotes, see the ranked Opportunity Matrix, see golden-set agreement scores, and paste a new comment to watch the engine analyze it live.
