@@ -2,6 +2,7 @@ import os
 import re
 import logging
 from typing import Tuple, Dict, Any, List
+from src.config import resolve_groq_model
 
 logger = logging.getLogger("pipeline.relevance_filter")
 
@@ -94,7 +95,7 @@ class RelevanceFilter:
         # 1. Attempt Groq evaluation
         if self.groq_client:
             try:
-                model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+                model_name = resolve_groq_model(self.groq_client)
                 prompt = f"""You are a product analyst filtering user feedback for Groww's mutual fund SIP continuation engine.
 Goal: Keep feedback discussing SIP behavior, continuation, pausing, stopping, expectations, returns, NAV/XIRR confusion, debit failures, or first-time investing.
 Drop pure KYC verification tickets, login OTP lockouts, or one-word praise ("good app") with no behavioral context.

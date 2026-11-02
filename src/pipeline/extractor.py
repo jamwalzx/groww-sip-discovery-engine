@@ -5,6 +5,7 @@ import logging
 from typing import Dict, Any, Optional, List
 
 from src.pipeline.schemas import ExtractedInsightSchema, CheckBehaviour, SegmentCues
+from src.config import resolve_groq_model
 
 logger = logging.getLogger("pipeline.extractor")
 
@@ -317,7 +318,7 @@ class StructuredExtractor:
         # 1. Attempt Groq extraction
         if self.groq_client:
             try:
-                model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+                model_name = resolve_groq_model(self.groq_client)
                 completion = self.groq_client.chat.completions.create(
                     model=model_name,
                     messages=[

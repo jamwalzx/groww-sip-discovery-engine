@@ -22,6 +22,36 @@ DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 # Privacy & Security
 HASH_SALT = os.getenv("HASH_SALT", "groww_sip_discovery_salt_2026")
 
+def resolve_groq_model(client=None) -> str:
+    """
+    Resolves the best available Groq model for the authenticated client account.
+    Prioritizes explicit GROQ_MODEL in env if valid in account, otherwise auto-discovers.
+    """
+    candidate_priority = [
+        "openai/gpt-oss-120b",
+        "llama-3.3-70b-versatile",
+        "llama3-70b-8192",
+        "qwen/qwen3.8-27b",
+        "openai/gpt-oss-20b",
+        "mixtral-8x7b-32768"
+    ]
+    env_model = os.getenv("GROQ_MODEL")
+    if client:
+        try:
+            available = {m.id for m in client.models.list().data}
+            if env_model and env_model in available:
+                return env_model
+            for candidate in candidate_priority:
+                if candidate in available:
+                    return candidate
+            if available:
+                chat_candidates = [m for m in available if "guard" not in m and "whisper" not in m]
+                if chat_candidates:
+                    return chat_candidates[0]
+        except Exception:
+            pass
+    return env_model or "openai/gpt-oss-120b"
+
 # Target Apps Configuration for Play Store & App Store
 # Format: key -> {name, play_store_id, app_store_id}
 MONITORED_APPS = {

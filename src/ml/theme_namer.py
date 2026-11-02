@@ -3,6 +3,7 @@ import json
 import logging
 from collections import Counter
 from typing import Dict, Any, List
+from src.config import resolve_groq_model
 
 logger = logging.getLogger("ml.theme_namer")
 
@@ -127,7 +128,7 @@ Provide a JSON object with:
 3. "taxonomy_type": "inductive" if an emergent, specific behavioral problem, else "deductive"
 4. "primary_drop_trigger": Dominant cause of drop (e.g. payment_failure, underwhelming_returns, confusion, cash_crunch)"""
 
-                model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+                model_name = resolve_groq_model(self.groq_client)
                 completion = self.groq_client.chat.completions.create(
                     model=model_name,
                     messages=[
