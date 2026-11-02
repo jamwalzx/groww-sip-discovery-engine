@@ -48,12 +48,19 @@ def render():
 
         with st.spinner("Executing schema-validated extraction..."):
             extractor = StructuredExtractor()
+            if extractor.groq_client:
+                engine_badge = "⚡ Groq LLM (llama-3.3-70b-versatile)"
+            elif extractor.gemini_client:
+                engine_badge = "✨ Google Gemini (gemini-2.5-flash)"
+            else:
+                engine_badge = "⚙️ Offline Heuristic Engine"
+
             insight = extractor.extract(user_input)
 
             # Check quote integrity
             quote_valid = insight.verbatim_quote in user_input
 
-            st.success("✅ Extraction Complete — Strict Pydantic v2 Schema Validated!")
+            st.success(f"✅ Extraction Complete via **{engine_badge}** — Strict Pydantic v2 Schema Validated!")
 
             # Metric cards
             m1, m2, m3, m4 = st.columns(4)

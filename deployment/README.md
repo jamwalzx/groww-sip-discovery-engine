@@ -18,13 +18,15 @@ This application can be deployed to **Streamlit Community Cloud** or **Hugging F
 3. **Configure Environment Secrets (Optional):**
    In the Streamlit App Settings -> **Secrets**, paste:
    ```toml
+   GROQ_API_KEY = "your-groq-api-key"
+   GROQ_MODEL = "llama-3.3-70b-versatile"
    GEMINI_API_KEY = "your-gemini-api-key"
    YOUTUBE_API_KEY = "your-youtube-api-key"
    REDDIT_CLIENT_ID = "your-reddit-client-id"
    REDDIT_CLIENT_SECRET = "your-reddit-client-secret"
    REDDIT_USER_AGENT = "GrowwSIPDiscoveryEngine/1.0"
    ```
-   *(Note: The engine features built-in offline fallbacks and local heuristic extraction, so it runs smoothly even without API keys!)*
+   *(Note: Groq provides ultra-fast LLM inference (`llama-3.3-70b-versatile`). The engine also features built-in offline fallbacks and local heuristic extraction, so it runs smoothly even without API keys!)*
 
 4. **Click Deploy:**
    Your public live URL will be active in ~2 minutes!

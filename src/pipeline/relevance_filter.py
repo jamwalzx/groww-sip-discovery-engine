@@ -31,13 +31,23 @@ class RelevanceFilter:
     """
 
     def __init__(self):
+        self.groq_api_key = os.getenv("GROQ_API_KEY")
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-        self.client = None
+        self.groq_client = None
+        self.gemini_client = None
 
-        if self.gemini_api_key:
+        if self.groq_api_key:
+            try:
+                from groq import Groq
+                self.groq_client = Groq(api_key=self.groq_api_key)
+                logger.info("Initialized Groq client for RelevanceFilter.")
+            except Exception as e:
+                logger.warning(f"Could not initialize Groq client: {e}")
+
+        if not self.groq_client and self.gemini_api_key:
             try:
                 from google import genai
-                self.client = genai.Client(api_key=self.gemini_api_key)
+                self.gemini_client = genai.Client(api_key=self.gemini_api_key)
                 logger.info("Initialized Google GenAI client for RelevanceFilter.")
             except Exception as e:
                 logger.warning(f"Could not initialize GenAI client: {e}. Using heuristic classifier.")
@@ -81,7 +91,38 @@ class RelevanceFilter:
         if not text or not text.strip():
             return False, "empty_text", 1.0
 
-        if self.client:
+        # 1. Attempt Groq evaluation
+        if self.groq_client:
+            try:
+                model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+                prompt = f"""You are a product analyst filtering user feedback for Groww's mutual fund SIP continuation engine.
+Goal: Keep feedback discussing SIP behavior, continuation, pausing, stopping, expectations, returns, NAV/XIRR confusion, debit failures, or first-time investing.
+Drop pure KYC verification tickets, login OTP lockouts, or one-word praise ("good app") with no behavioral context.
+
+Feedback:
+"{text}"
+
+Reply in exactly two lines:
+RELEVANT: [YES/NO]
+REASON: [Brief 1-sentence reason]"""
+
+                completion = self.groq_client.chat.completions.create(
+                    model=model_name,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.0
+                )
+                txt = completion.choices[0].message.content.strip()
+                is_rel = "RELEVANT: YES" in txt.upper()
+                reason = "groq_classified"
+                for line in txt.split("\n"):
+                    if line.upper().startswith("REASON:"):
+                        reason = line[7:].strip()
+                return is_rel, reason, 0.95
+            except Exception as e:
+                logger.warning(f"Groq relevance filter call failed: {e}. Trying next provider...")
+
+        # 2. Attempt Gemini evaluation
+        if self.gemini_client:
             try:
                 prompt = f"""You are a product analyst filtering user feedback for Groww's mutual fund SIP continuation engine.
 Goal: Keep feedback discussing SIP behavior, continuation, pausing, stopping, expectations, returns, NAV/XIRR confusion, debit failures, or first-time investing.
@@ -94,19 +135,19 @@ Reply in exactly two lines:
 RELEVANT: [YES/NO]
 REASON: [Brief 1-sentence reason]"""
 
-                response = self.client.models.generate_content(
+                response = self.gemini_client.models.generate_content(
                     model="gemini-2.5-flash",
                     contents=prompt,
                 )
                 txt = response.text.strip()
                 is_rel = "RELEVANT: YES" in txt.upper()
-                reason = "llm_classified"
+                reason = "gemini_classified"
                 for line in txt.split("\n"):
                     if line.upper().startswith("REASON:"):
                         reason = line[7:].strip()
                 return is_rel, reason, 0.95
             except Exception as e:
-                logger.warning(f"LLM relevance filter call failed: {e}. Falling back to rule-based evaluation.")
+                logger.warning(f"Gemini relevance filter call failed: {e}. Falling back to rule-based evaluation.")
 
         return self.evaluate_rule_based(text)
 

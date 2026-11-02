@@ -53,20 +53,33 @@ JSON SCHEMA REQUIREMENT:
 class StructuredExtractor:
     """
     Executes schema-validated structured extraction using Pydantic v2.
-    Ensures quote integrity assertions and allows offline heuristic extraction.
+    Supports Groq LLM (e.g. Llama-3.3-70b), Google GenAI, and offline heuristic extraction.
+    Ensures programmatic quote integrity assertions.
     """
 
     def __init__(self):
+        self.groq_api_key = os.getenv("GROQ_API_KEY")
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-        self.client = None
+        self.groq_client = None
+        self.gemini_client = None
 
-        if self.gemini_api_key:
+        # 1. Initialize Groq client (Primary)
+        if self.groq_api_key:
+            try:
+                from groq import Groq
+                self.groq_client = Groq(api_key=self.groq_api_key)
+                logger.info("Initialized Groq LLM client for StructuredExtractor.")
+            except Exception as e:
+                logger.warning(f"Could not initialize Groq client: {e}")
+
+        # 2. Initialize Gemini client (Secondary fallback)
+        if not self.groq_client and self.gemini_api_key:
             try:
                 from google import genai
-                self.client = genai.Client(api_key=self.gemini_api_key)
+                self.gemini_client = genai.Client(api_key=self.gemini_api_key)
                 logger.info("Initialized Google GenAI client for StructuredExtractor.")
             except Exception as e:
-                logger.warning(f"Could not initialize GenAI: {e}. Fallback to offline rule extractor.")
+                logger.warning(f"Could not initialize GenAI: {e}")
 
     def assert_quote_integrity(self, quote: str, raw_text: str) -> str:
         """
@@ -297,12 +310,35 @@ class StructuredExtractor:
 
     def extract(self, text: str) -> ExtractedInsightSchema:
         """
-        Extracts structured insight from text using GenAI API if configured, else heuristic engine.
+        Extracts structured insight from text using Groq LLM (or Gemini) if configured,
+        else uses the deterministic heuristic engine.
         Guarantees that verbatim_quote is an exact substring of text.
         """
-        if self.client:
+        # 1. Attempt Groq extraction
+        if self.groq_client:
             try:
-                response = self.client.models.generate_content(
+                model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+                completion = self.groq_client.chat.completions.create(
+                    model=model_name,
+                    messages=[
+                        {"role": "system", "content": SYSTEM_EXTRACTION_PROMPT},
+                        {"role": "user", "content": f"User feedback text:\n{text}"}
+                    ],
+                    temperature=0.0,
+                    response_format={"type": "json_object"}
+                )
+                raw_json = completion.choices[0].message.content.strip()
+                data = json.loads(raw_json)
+                raw_quote = data.get("verbatim_quote", "")
+                data["verbatim_quote"] = self.assert_quote_integrity(raw_quote, text)
+                return ExtractedInsightSchema(**data)
+            except Exception as e:
+                logger.warning(f"Groq structured extraction failed: {e}. Trying next provider...")
+
+        # 2. Attempt Gemini extraction
+        if self.gemini_client:
+            try:
+                response = self.gemini_client.models.generate_content(
                     model="gemini-2.5-flash",
                     contents=f"{SYSTEM_EXTRACTION_PROMPT}\n\nUSER FEEDBACK:\n{text}",
                     config={
@@ -311,11 +347,11 @@ class StructuredExtractor:
                     }
                 )
                 data = json.loads(response.text.strip())
-                # Enforce quote integrity
                 raw_quote = data.get("verbatim_quote", "")
                 data["verbatim_quote"] = self.assert_quote_integrity(raw_quote, text)
                 return ExtractedInsightSchema(**data)
             except Exception as e:
-                logger.warning(f"GenAI structured extraction failed: {e}. Using deterministic extractor.")
+                logger.warning(f"Gemini structured extraction failed: {e}. Using deterministic extractor.")
 
+        # 3. Deterministic heuristic extraction fallback
         return self.extract_heuristic(text)

@@ -8,3 +8,4 @@ echo.
 call .venv\Scripts\activate.bat
 streamlit run app\streamlit_app.py
 pause
+

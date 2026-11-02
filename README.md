@@ -155,7 +155,14 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 2. Run Pipeline Test Suite (26/26 Tests Passing)
+### 2. Configure Environment (Optional)
+The pipeline features built-in offline heuristics, but for ultra-fast live LLM extraction powered by Groq (`llama-3.3-70b-versatile`):
+```bash
+cp .env.example .env
+# Set GROQ_API_KEY=your_key in .env (Free API key at https://console.groq.com/)
+```
+
+### 3. Run Pipeline Test Suite (26/26 Tests Passing)
 ```bash
 pytest tests/
 ```

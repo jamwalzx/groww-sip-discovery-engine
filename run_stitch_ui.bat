@@ -7,3 +7,4 @@ echo =========================================================================
 echo.
 .venv\Scripts\python.exe app\serve_ui.py 8080
 pause
+

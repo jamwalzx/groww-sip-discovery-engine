@@ -73,12 +73,23 @@ class ThemeNamer:
     """
 
     def __init__(self):
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        self.client = None
-        if self.api_key:
+        self.groq_api_key = os.getenv("GROQ_API_KEY")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        self.groq_client = None
+        self.gemini_client = None
+
+        if self.groq_api_key:
+            try:
+                from groq import Groq
+                self.groq_client = Groq(api_key=self.groq_api_key)
+                logger.info("Initialized Groq client for ThemeNamer.")
+            except Exception as e:
+                logger.warning(f"Could not initialize Groq client: {e}")
+
+        if not self.groq_client and self.gemini_api_key:
             try:
                 from google import genai
-                self.client = genai.Client(api_key=self.api_key)
+                self.gemini_client = genai.Client(api_key=self.gemini_api_key)
                 logger.info("Initialized Google GenAI for ThemeNamer.")
             except Exception as e:
                 logger.warning(f"ThemeNamer could not initialize GenAI: {e}")
@@ -102,8 +113,8 @@ class ThemeNamer:
 
         all_text = " ".join([it.get("raw_text", "") for it in items]).lower()
 
-        # 1. Attempt LLM Naming if GenAI client is available
-        if self.client and len(items) >= 2:
+        # 1. Attempt Groq Naming
+        if self.groq_client and len(items) >= 2:
             try:
                 quotes_text = "\n".join([f"- {it.get('raw_text', '')[:120]}" for it in exemplars])
                 prompt = f"""You are a Growth Product Manager at Groww analyzing user feedback clusters.
@@ -116,7 +127,42 @@ Provide a JSON object with:
 3. "taxonomy_type": "inductive" if an emergent, specific behavioral problem, else "deductive"
 4. "primary_drop_trigger": Dominant cause of drop (e.g. payment_failure, underwhelming_returns, confusion, cash_crunch)"""
 
-                res = self.client.models.generate_content(
+                model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+                completion = self.groq_client.chat.completions.create(
+                    model=model_name,
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.0,
+                    response_format={"type": "json_object"}
+                )
+                parsed = json.loads(completion.choices[0].message.content.strip())
+                return {
+                    "title": parsed.get("title", f"Theme: {dominant_trigger.replace('_', ' ').title()}"),
+                    "description": parsed.get("description", "Discovered mutual fund feedback cluster."),
+                    "taxonomy_type": parsed.get("taxonomy_type", "inductive"),
+                    "primary_drop_trigger": parsed.get("primary_drop_trigger", dominant_trigger),
+                    "primary_journey_stage": dominant_stage,
+                    "avg_severity": float(avg_sev)
+                }
+            except Exception as e:
+                logger.warning(f"Groq theme naming failed: {e}. Trying next provider...")
+
+        # 2. Attempt Gemini Naming
+        if self.gemini_client and len(items) >= 2:
+            try:
+                quotes_text = "\n".join([f"- {it.get('raw_text', '')[:120]}" for it in exemplars])
+                prompt = f"""You are a Growth Product Manager at Groww analyzing user feedback clusters.
+Given these sample quotes from a cluster of mutual fund SIP feedback:
+{quotes_text}
+
+Provide a JSON object with:
+1. "title": Concise actionable theme title (max 8 words, specific to the root friction or habit)
+2. "description": 1-sentence product summary
+3. "taxonomy_type": "inductive" if an emergent, specific behavioral problem, else "deductive"
+4. "primary_drop_trigger": Dominant cause of drop (e.g. payment_failure, underwhelming_returns, confusion, cash_crunch)"""
+
+                res = self.gemini_client.models.generate_content(
                     model="gemini-2.5-flash",
                     contents=prompt,
                     config={"response_mime_type": "application/json", "temperature": 0.0}
@@ -131,7 +177,7 @@ Provide a JSON object with:
                     "avg_severity": float(avg_sev)
                 }
             except Exception as e:
-                logger.warning(f"LLM theme naming failed: {e}. Using domain taxonomy matcher.")
+                logger.warning(f"Gemini theme naming failed: {e}. Using domain taxonomy matcher.")
 
         # 2. Domain Taxonomy Matcher
         best_match = None
