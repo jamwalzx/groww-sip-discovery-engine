@@ -15,11 +15,9 @@ from src.db.models import OpportunityScoreRecord
 
 def render():
     st.title("🎯 Quantified Opportunity Matrix")
-    st.markdown(
-        "Prioritize product interventions using the multi-factor Opportunity Formula: "
-        r"$$\text{Impact} = (w_f \cdot F_{\text{norm}} + w_s \cdot S_{\text{norm}} + w_p \cdot P_{\text{norm}}) \times 100$$"
-        r"$$\text{Opportunity Score} = \text{Impact} \times A_{\text{norm}}$$"
-    )
+    st.markdown("Prioritize product interventions using the multi-factor Opportunity Formula:")
+    st.latex(r"\text{Impact} = (w_f \cdot F_{\text{norm}} + w_s \cdot S_{\text{norm}} + w_p \cdot P_{\text{norm}}) \times 100")
+    st.latex(r"\text{Opportunity Score} = \text{Impact} \times A_{\text{norm}}")
 
     st.success(
         "🛡️ **Compliance & Guardrail Audit Verified:** Every product opportunity strictly excludes "
