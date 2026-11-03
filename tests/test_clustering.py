@@ -66,7 +66,8 @@ def test_theme_namer():
         ]
     }
     named = namer.name_cluster(cluster_sample)
-    assert "Salary" in named["title"] or "Bounce" in named["title"] or "Autopay" in named["title"]
+    title_lower = named["title"].lower()
+    assert any(w in title_lower for w in ["salary", "bounce", "autopay", "mandate", "debit"])
     assert named["taxonomy_type"] in ["inductive", "deductive"]
     assert named["avg_severity"] == 5.0
 

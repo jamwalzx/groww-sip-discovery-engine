@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import time
 import logging
 from typing import Dict, Any, Optional, List
 
@@ -63,12 +64,13 @@ class StructuredExtractor:
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
         self.groq_client = None
         self.gemini_client = None
+        self._rate_limited_until = 0.0
 
         # 1. Initialize Groq client (Primary)
         if self.groq_api_key:
             try:
                 from groq import Groq
-                self.groq_client = Groq(api_key=self.groq_api_key)
+                self.groq_client = Groq(api_key=self.groq_api_key, max_retries=0)
                 logger.info("Initialized Groq LLM client for StructuredExtractor.")
             except Exception as e:
                 logger.warning(f"Could not initialize Groq client: {e}")
@@ -316,7 +318,7 @@ class StructuredExtractor:
         Guarantees that verbatim_quote is an exact substring of text.
         """
         # 1. Attempt Groq extraction
-        if self.groq_client:
+        if self.groq_client and time.time() > self._rate_limited_until:
             try:
                 model_name = resolve_groq_model(self.groq_client)
                 completion = self.groq_client.chat.completions.create(
@@ -334,7 +336,11 @@ class StructuredExtractor:
                 data["verbatim_quote"] = self.assert_quote_integrity(raw_quote, text)
                 return ExtractedInsightSchema(**data)
             except Exception as e:
-                logger.warning(f"Groq structured extraction failed: {e}. Trying next provider...")
+                if "429" in str(e) or "rate" in str(e).lower():
+                    self._rate_limited_until = time.time() + 60.0
+                    logger.warning("Groq rate limit (429) hit. Pausing Groq calls for 60s; using deterministic heuristic fallback.")
+                else:
+                    logger.warning(f"Groq structured extraction failed: {e}. Trying next provider...")
 
         # 2. Attempt Gemini extraction
         if self.gemini_client:

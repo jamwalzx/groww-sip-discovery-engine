@@ -40,7 +40,7 @@ class RelevanceFilter:
         if self.groq_api_key:
             try:
                 from groq import Groq
-                self.groq_client = Groq(api_key=self.groq_api_key)
+                self.groq_client = Groq(api_key=self.groq_api_key, max_retries=1)
                 logger.info("Initialized Groq client for RelevanceFilter.")
             except Exception as e:
                 logger.warning(f"Could not initialize Groq client: {e}")
@@ -81,18 +81,24 @@ class RelevanceFilter:
         if any(w in lower_text for w in ["invest", "money", "rupaye", "paisa", "charges", "bank", "account", "tax"]):
             # Check if it has behavior or friction verbs
             if any(w in lower_text for w in ["fail", "error", "delay", "charge", "refund", "cut", "problem", "loss", "stop", "switch"]):
-                return True, "financial_transaction_friction", 0.78
+                return True, "financial_transaction_friction", 0.90
 
-        return False, "unrelated_to_sip_continuation", 0.85
+        return False, "unrelated_to_sip_continuation", 0.88
 
     def evaluate(self, text: str) -> Tuple[bool, str, float]:
         """
-        Evaluates relevance using LLM when available, falling back to rule-based engine.
+        Evaluates relevance using fast rule-based triage first.
+        High-confidence decisions (>=0.85) are returned immediately.
+        Ambiguous cases defer to Groq/Gemini LLM when available.
         """
         if not text or not text.strip():
             return False, "empty_text", 1.0
 
-        # 1. Attempt Groq evaluation
+        rule_rel, rule_reason, rule_conf = self.evaluate_rule_based(text)
+        if rule_conf >= 0.85:
+            return rule_rel, rule_reason, rule_conf
+
+        # 1. Attempt Groq evaluation for ambiguous records
         if self.groq_client:
             try:
                 model_name = resolve_groq_model(self.groq_client)
@@ -150,7 +156,7 @@ REASON: [Brief 1-sentence reason]"""
             except Exception as e:
                 logger.warning(f"Gemini relevance filter call failed: {e}. Falling back to rule-based evaluation.")
 
-        return self.evaluate_rule_based(text)
+        return rule_rel, rule_reason, rule_conf
 
     def filter_batch(self, items: List[Dict[str, Any]]) -> Dict[str, Any]:
         """

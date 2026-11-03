@@ -153,6 +153,12 @@ def run_phase4():
     display_phase4_report(themes_summary, outlier_cnt, total_items)
 
 def display_phase4_report(themes_summary, outlier_cnt, total_items):
+    import sys
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     print("\n" + "=" * 80)
     print("                 PHASE 4: SEMANTIC CLUSTERING & THEME DISCOVERY")
     print("=" * 80)

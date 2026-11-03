@@ -82,7 +82,7 @@ class ThemeNamer:
         if self.groq_api_key:
             try:
                 from groq import Groq
-                self.groq_client = Groq(api_key=self.groq_api_key)
+                self.groq_client = Groq(api_key=self.groq_api_key, max_retries=1)
                 logger.info("Initialized Groq client for ThemeNamer.")
             except Exception as e:
                 logger.warning(f"Could not initialize Groq client: {e}")

@@ -22,11 +22,19 @@ DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 # Privacy & Security
 HASH_SALT = os.getenv("HASH_SALT", "groww_sip_discovery_salt_2026")
 
+_RESOLVED_GROQ_MODEL = None
+
 def resolve_groq_model(client=None) -> str:
     """
     Resolves the best available Groq model for the authenticated client account.
     Prioritizes explicit GROQ_MODEL in env if valid in account, otherwise auto-discovers.
+    Caches resolved model in-memory to avoid redundant GET /models calls.
     """
+    global _RESOLVED_GROQ_MODEL
+    if _RESOLVED_GROQ_MODEL:
+        return _RESOLVED_GROQ_MODEL
+
+    env_model = os.getenv("GROQ_MODEL")
     candidate_priority = [
         "openai/gpt-oss-120b",
         "llama-3.3-70b-versatile",
@@ -35,22 +43,25 @@ def resolve_groq_model(client=None) -> str:
         "openai/gpt-oss-20b",
         "mixtral-8x7b-32768"
     ]
-    env_model = os.getenv("GROQ_MODEL")
     if client:
         try:
             available = {m.id for m in client.models.list().data}
             if env_model and env_model in available:
-                return env_model
+                _RESOLVED_GROQ_MODEL = env_model
+                return _RESOLVED_GROQ_MODEL
             for candidate in candidate_priority:
                 if candidate in available:
-                    return candidate
+                    _RESOLVED_GROQ_MODEL = candidate
+                    return _RESOLVED_GROQ_MODEL
             if available:
                 chat_candidates = [m for m in available if "guard" not in m and "whisper" not in m]
                 if chat_candidates:
-                    return chat_candidates[0]
+                    _RESOLVED_GROQ_MODEL = chat_candidates[0]
+                    return _RESOLVED_GROQ_MODEL
         except Exception:
             pass
-    return env_model or "openai/gpt-oss-120b"
+    _RESOLVED_GROQ_MODEL = env_model or "openai/gpt-oss-120b"
+    return _RESOLVED_GROQ_MODEL
 
 # Target Apps Configuration for Play Store & App Store
 # Format: key -> {name, play_store_id, app_store_id}
