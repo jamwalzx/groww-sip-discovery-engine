@@ -1,41 +1,40 @@
-"""Views package for Streamlit application."""
-from importlib import import_module
+"""Views package for Streamlit application with hot-reloading support."""
+import sys
+from importlib import import_module, reload
+
+def _load_view(module_name: str):
+    """Loads or reloads a view module to ensure immediate hot-reloading on changes."""
+    if module_name in sys.modules:
+        try:
+            return reload(sys.modules[module_name])
+        except Exception:
+            return import_module(module_name)
+    return import_module(module_name)
 
 def render_overview():
-    mod = import_module("app.views.1_overview")
+    mod = _load_view("app.views.1_overview")
     mod.render()
 
 def render_questions():
-    mod = import_module("app.views.2_questions")
+    mod = _load_view("app.views.2_questions")
     mod.render()
 
 def render_opportunity_matrix():
-    mod = import_module("app.views.3_opportunity_matrix")
+    mod = _load_view("app.views.3_opportunity_matrix")
     mod.render()
 
 def render_segments():
-    mod = import_module("app.views.4_segments")
+    mod = _load_view("app.views.4_segments")
     mod.render()
 
 def render_cohorts():
-    mod = import_module("app.views.5_cohorts")
+    mod = _load_view("app.views.5_cohorts")
     mod.render()
 
 def render_evals():
-    mod = import_module("app.views.6_evals")
+    mod = _load_view("app.views.6_evals")
     mod.render()
 
 def render_try_it():
-    mod = import_module("app.views.7_try_it")
+    mod = _load_view("app.views.7_try_it")
     mod.render()
-
-__all__ = [
-    "render_overview",
-    "render_questions",
-    "render_opportunity_matrix",
-    "render_segments",
-    "render_cohorts",
-    "render_evals",
-    "render_try_it"
-]
-
